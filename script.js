@@ -146,18 +146,62 @@ if (form && fileInput) {
 
 renderPosts();
 
+function setYouTubeThumbnail(videoBox, encodedVideoId) {
+  const thumbnails = [
+    `https://i.ytimg.com/vi_webp/${encodedVideoId}/maxresdefault.webp`,
+    `https://i.ytimg.com/vi/${encodedVideoId}/maxresdefault.jpg`,
+    `https://i.ytimg.com/vi_webp/${encodedVideoId}/sddefault.webp`,
+    `https://i.ytimg.com/vi/${encodedVideoId}/sddefault.jpg`,
+    `https://i.ytimg.com/vi_webp/${encodedVideoId}/hqdefault.webp`,
+    `https://i.ytimg.com/vi/${encodedVideoId}/hqdefault.jpg`,
+    `https://i.ytimg.com/vi/${encodedVideoId}/0.jpg`,
+  ];
+
+  let thumbnailIndex = 0;
+
+  function tryThumbnail() {
+    if (thumbnailIndex >= thumbnails.length) return;
+
+    const thumbnailUrl = thumbnails[thumbnailIndex];
+    const thumbnail = new Image();
+
+    thumbnail.onload = () => {
+      const isMissingThumbnail = thumbnail.naturalWidth <= 120 && thumbnail.naturalHeight <= 90;
+
+      if (isMissingThumbnail && thumbnailIndex < thumbnails.length - 1) {
+        thumbnailIndex += 1;
+        tryThumbnail();
+        return;
+      }
+
+      videoBox.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.42)), url("${thumbnailUrl}")`;
+      videoBox.classList.add('has-thumbnail');
+    };
+
+    thumbnail.onerror = () => {
+      thumbnailIndex += 1;
+      tryThumbnail();
+    };
+
+    thumbnail.src = thumbnailUrl;
+  }
+
+  tryThumbnail();
+}
+
 document.querySelectorAll('.secret-video-box[data-youtube-id]').forEach((videoBox) => {
   const videoId = videoBox.dataset.youtubeId;
   const title = videoBox.dataset.videoTitle || 'Secret video';
   const trigger = videoBox.querySelector('.secret-video-trigger');
 
-  videoBox.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.42)), url("https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg")`;
+  const encodedVideoId = encodeURIComponent(videoId);
+  setYouTubeThumbnail(videoBox, encodedVideoId);
 
   if (!trigger) return;
 
   trigger.addEventListener('click', () => {
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?autoplay=1&controls=0&rel=0&playsinline=1`;
+    iframe.src = `https://www.youtube.com/embed/${encodedVideoId}?autoplay=1&controls=0&rel=0&playsinline=1`;
     iframe.title = title;
     iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
     iframe.allowFullscreen = true;
