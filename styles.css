@@ -206,6 +206,83 @@ body, body p, body p * {
   color: #ffffff !important;
 }
 
+.delayed-home-message {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  font-size: clamp(0.95rem, 2.2vw, 1.35rem);
+  line-height: 1.5;
+  z-index: 3;
+}
+
+.delayed-home-message span,
+.delayed-home-message a {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  animation: delayedMessageFade 16s ease-in-out 8s infinite;
+}
+
+.delayed-home-message span:nth-child(2) {
+  animation-delay: 12s;
+}
+
+.delayed-home-message a {
+  animation-delay: 16s;
+  pointer-events: auto;
+}
+
+@keyframes delayedMessageFade {
+  0%,
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  8%,
+  32% {
+    opacity: 0.92;
+    visibility: visible;
+  }
+
+  50% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.page-seven {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.page-seven-message {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+}
+
+.page-seven-message p {
+  margin: 0;
+}
+
+.page-seven-return {
+  opacity: 0;
+  animation: pageSevenReturnFade 10s ease-in-out 4s forwards;
+}
+
+@keyframes pageSevenReturnFade {
+  0%,
+  45% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.9;
+  }
+}
+
 video {
   display: block;
   margin: 60px auto 0;

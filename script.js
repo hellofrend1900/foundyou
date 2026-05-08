@@ -146,6 +146,101 @@ if (form && fileInput) {
 
 renderPosts();
 
+const delayedHomeMessage = document.querySelector('.delayed-home-message');
+
+function rectsOverlap(firstRect, secondRect, buffer = 28) {
+  return !(
+    firstRect.right + buffer < secondRect.left ||
+    firstRect.left - buffer > secondRect.right ||
+    firstRect.bottom + buffer < secondRect.top ||
+    firstRect.top - buffer > secondRect.bottom
+  );
+}
+
+function overlapArea(firstRect, secondRect, buffer = 28) {
+  const left = Math.max(firstRect.left, secondRect.left - buffer);
+  const top = Math.max(firstRect.top, secondRect.top - buffer);
+  const right = Math.min(firstRect.right, secondRect.right + buffer);
+  const bottom = Math.min(firstRect.bottom, secondRect.bottom + buffer);
+
+  return Math.max(0, right - left) * Math.max(0, bottom - top);
+}
+
+function findOpenPosition(element, blockers) {
+  const margin = 24;
+  const elementRect = element.getBoundingClientRect();
+  const elementWidth = Math.max(elementRect.width, 120);
+  const elementHeight = Math.max(elementRect.height, 32);
+  const maxLeft = Math.max(margin, window.innerWidth - elementWidth - margin);
+  const maxTop = Math.max(margin, window.innerHeight - elementHeight - margin);
+  let chosenPosition = {
+    left: margin + Math.random() * Math.max(1, maxLeft - margin),
+    top: margin + Math.random() * Math.max(1, maxTop - margin),
+  };
+  let lowestOverlap = Number.POSITIVE_INFINITY;
+
+  for (let attempt = 0; attempt < 120; attempt += 1) {
+    const left = margin + Math.random() * Math.max(1, maxLeft - margin);
+    const top = margin + Math.random() * Math.max(1, maxTop - margin);
+    const candidateRect = {
+      left,
+      top,
+      right: left + elementWidth,
+      bottom: top + elementHeight,
+    };
+    const overlapScore = blockers.reduce(
+      (total, blockerRect) => total + overlapArea(candidateRect, blockerRect),
+      0
+    );
+
+    if (overlapScore < lowestOverlap) {
+      lowestOverlap = overlapScore;
+      chosenPosition = { left, top };
+    }
+
+    if (!blockers.some((blockerRect) => rectsOverlap(candidateRect, blockerRect))) {
+      chosenPosition = { left, top };
+      break;
+    }
+  }
+
+  return {
+    left: chosenPosition.left,
+    top: chosenPosition.top,
+    right: chosenPosition.left + elementWidth,
+    bottom: chosenPosition.top + elementHeight,
+  };
+}
+
+function positionDelayedHomeMessage() {
+  if (!delayedHomeMessage) return;
+
+  const blockers = Array.from(document.querySelectorAll('nav, body p'))
+    .filter((element) => !delayedHomeMessage.contains(element))
+    .map((element) => element.getBoundingClientRect())
+    .filter((rect) => rect.width > 0 && rect.height > 0);
+  const placedRects = [...blockers];
+  const messageParts = Array.from(delayedHomeMessage.children);
+
+  messageParts.forEach((messagePart) => {
+    messagePart.style.left = '0';
+    messagePart.style.top = '0';
+  });
+
+  messageParts.forEach((messagePart) => {
+    const chosenRect = findOpenPosition(messagePart, placedRects);
+    messagePart.style.left = `${chosenRect.left}px`;
+    messagePart.style.top = `${chosenRect.top}px`;
+    placedRects.push(chosenRect);
+  });
+}
+
+if (delayedHomeMessage) {
+  positionDelayedHomeMessage();
+  window.addEventListener('resize', positionDelayedHomeMessage);
+  window.setInterval(positionDelayedHomeMessage, 24000);
+}
+
 function setYouTubeThumbnail(videoBox, encodedVideoId) {
   const thumbnails = [
     `https://i.ytimg.com/vi_webp/${encodedVideoId}/maxresdefault.webp`,
