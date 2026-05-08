@@ -161,27 +161,39 @@ button:hover {
     margin: 5px 0 !important;
   }
   
-  /* Override inline margins for paragraphs on mobile */
+  /* Keep the home page text scattered on mobile, just with smaller offsets. */
   body p {
-    margin-left: 0 !important;
-    text-align: center;
+    max-width: 82vw;
+    text-align: left;
+    overflow-wrap: break-word;
   }
   
-  /* Specific overrides for known margins */
+  body p[style*="margin-left: 10%"] {
+    margin-left: 7% !important;
+  }
+
   body p[style*="margin-left: 30%"] {
-    margin-left: 0 !important;
+    margin-left: 22% !important;
   }
   
-  body p[style*="margin-left: 22%"] {
-    margin-left: 0 !important;
+  body p[style*="margin-left: 40%"] {
+    margin-left: 32% !important;
+  }
+
+  body p[style*="margin-left: 50%"] {
+    margin-left: 45% !important;
   }
   
   body p[style*="margin-left: 70%"] {
-    margin-left: 0 !important;
+    margin-left: 58% !important;
+  }
+
+  body p[style*="margin-left: 90%"] {
+    margin-left: 66% !important;
   }
   
   body p[style*="margin-left: 15%"] {
-    margin-left: 0 !important;
+    margin-left: 12% !important;
   }
 }
 
