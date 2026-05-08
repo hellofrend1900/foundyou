@@ -145,3 +145,25 @@ if (form && fileInput) {
 }
 
 renderPosts();
+
+document.querySelectorAll('.secret-video-box[data-youtube-id]').forEach((videoBox) => {
+  const videoId = videoBox.dataset.youtubeId;
+  const title = videoBox.dataset.videoTitle || 'Secret video';
+  const trigger = videoBox.querySelector('.secret-video-trigger');
+
+  videoBox.style.backgroundImage = `linear-gradient(rgba(0,0,0,0.12), rgba(0,0,0,0.42)), url("https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg")`;
+
+  if (!trigger) return;
+
+  trigger.addEventListener('click', () => {
+    const iframe = document.createElement('iframe');
+    iframe.src = `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?autoplay=1&controls=0&rel=0&playsinline=1`;
+    iframe.title = title;
+    iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+    iframe.allowFullscreen = true;
+
+    videoBox.classList.add('is-playing');
+    videoBox.style.backgroundImage = '';
+    videoBox.replaceChildren(iframe);
+  });
+});
