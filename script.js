@@ -146,25 +146,6 @@ if (form && fileInput) {
 
 renderPosts();
 
-const visitCode = document.querySelector('.visit-code');
-const VISIT_CODE_KEY = 'foundYouVisitCode';
-const shouldSkipVisitCount = new URLSearchParams(window.location.search).has('nocount');
-
-if (visitCode) {
-  try {
-    const currentVisitCount = Number(localStorage.getItem(VISIT_CODE_KEY) || '0');
-    const visibleVisitCount = shouldSkipVisitCount ? currentVisitCount : currentVisitCount + 1;
-
-    if (!shouldSkipVisitCount) {
-      localStorage.setItem(VISIT_CODE_KEY, String(visibleVisitCount));
-    }
-
-    visitCode.textContent = String(visibleVisitCount).padStart(9, '0');
-  } catch (error) {
-    visitCode.textContent = '000000000';
-  }
-}
-
 const delayedHomeMessage = document.querySelector('.delayed-home-message');
 
 function rectsOverlap(firstRect, secondRect, buffer = 28) {

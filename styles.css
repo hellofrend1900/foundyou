@@ -206,10 +206,6 @@ body, body p, body p * {
   color: #ffffff !important;
 }
 
-.visit-code {
-  letter-spacing: 0.12em;
-}
-
 .page-three-secret {
   min-height: calc(100vh - 150px);
   display: grid !important;
