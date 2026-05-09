@@ -148,14 +148,17 @@ renderPosts();
 
 const visitCode = document.querySelector('.visit-code');
 const VISIT_CODE_KEY = 'foundYouVisitCode';
-const VISIT_COUNTER_OFFSET = -4; // Drop by 1 whenever a site-change visit needs cancelling out.
+const shouldSkipVisitCount = new URLSearchParams(window.location.search).has('nocount');
 
 if (visitCode) {
   try {
-    const rawVisitCount = Number(localStorage.getItem(VISIT_CODE_KEY) || '0') + 1;
-    const visibleVisitCount = Math.max(0, rawVisitCount + VISIT_COUNTER_OFFSET);
+    const currentVisitCount = Number(localStorage.getItem(VISIT_CODE_KEY) || '0');
+    const visibleVisitCount = shouldSkipVisitCount ? currentVisitCount : currentVisitCount + 1;
 
-    localStorage.setItem(VISIT_CODE_KEY, String(rawVisitCount));
+    if (!shouldSkipVisitCount) {
+      localStorage.setItem(VISIT_CODE_KEY, String(visibleVisitCount));
+    }
+
     visitCode.textContent = String(visibleVisitCount).padStart(9, '0');
   } catch (error) {
     visitCode.textContent = '000000000';
