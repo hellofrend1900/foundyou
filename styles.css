@@ -206,6 +206,47 @@ body, body p, body p * {
   color: #ffffff !important;
 }
 
+.visit-code {
+  letter-spacing: 0.12em;
+}
+
+.page-three-secret {
+  min-height: calc(100vh - 150px);
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  place-items: center;
+}
+
+.page-three-secret-link {
+  padding: 16px 24px;
+  color: transparent !important;
+  text-decoration: none;
+  transition: color 0.7s ease;
+}
+
+.page-three-secret-link:hover,
+.page-three-secret-link:focus {
+  color: #ffffff !important;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .page-three-secret-link {
+    color: #ffffff !important;
+    opacity: 0;
+    animation: pageThreeSecretReveal 1.4s ease 5s forwards;
+  }
+}
+
+@keyframes pageThreeSecretReveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.92;
+  }
+}
+
 .delayed-home-message {
   position: fixed;
   inset: 0;
@@ -283,6 +324,223 @@ body, body p, body p * {
   }
 }
 
+.friend-page {
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0 1px, transparent 1px 5px),
+    #000;
+}
+
+.friend-profile-shell {
+  width: min(94vw, 920px);
+  margin: 28px auto 80px;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 0;
+  font-family: Georgia, serif;
+}
+
+.friend-network-bar {
+  border: 1px solid rgba(255,255,255,0.32);
+  border-bottom: 0;
+  background: #151515;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 8px 12px;
+}
+
+.friend-network-bar strong {
+  color: #ff5656;
+  font-size: 1.2rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.friend-network-bar span {
+  color: rgba(255,255,255,0.68);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}
+
+.friend-profile-card {
+  border: 1px solid rgba(255,255,255,0.32);
+  background: #070707;
+}
+
+.friend-profile-header {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255,255,255,0.26);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 12px;
+  background: #101010;
+}
+
+.friend-profile-header p,
+.friend-profile-header h1 {
+  margin: 0;
+}
+
+.friend-profile-header h1 {
+  font-size: clamp(1.55rem, 4vw, 2.5rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}
+
+.friend-profile-header p,
+.friend-profile-status,
+.friend-message-window span,
+.friend-online-status span {
+  color: rgba(255,255,255,0.72) !important;
+}
+
+.friend-profile-grid {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+}
+
+.friend-profile-side {
+  padding: 12px;
+  border-right: 1px solid rgba(255,255,255,0.24);
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  background: #030303;
+}
+
+.friend-profile-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 2px solid rgba(255,255,255,0.36);
+  display: grid;
+  place-items: center;
+  font-size: 4rem;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0)),
+    #050505;
+}
+
+.friend-profile-status {
+  margin: 0;
+}
+
+.friend-contact-box {
+  border: 1px solid rgba(255,255,255,0.28);
+}
+
+.friend-contact-box h2 {
+  margin: 0;
+  padding: 6px 8px;
+  background: #1c1c1c;
+  color: #ff5656;
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
+
+.friend-contact-box {
+  display: grid;
+}
+
+.friend-contact-box a,
+.friend-copy-notice {
+  margin: 0;
+  padding: 7px 8px;
+  border-top: 1px solid rgba(255,255,255,0.14);
+}
+
+.friend-copy-notice {
+  min-height: 2.2em;
+  color: rgba(255,255,255,0.68);
+}
+
+.friend-contact-box a {
+  color: rgba(255,255,255,0.84) !important;
+}
+
+.friend-online-status {
+  margin: 0;
+}
+
+.friend-profile-main {
+  padding: 12px;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 12px;
+}
+
+.friend-profile-main article {
+  border: 1px solid rgba(255,255,255,0.26);
+  background: #030303;
+}
+
+.friend-profile-main h2 {
+  margin: 0;
+  padding: 5px 8px;
+  background: #1c1c1c;
+  font-size: 0.84rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: #ff5656;
+}
+
+.friend-profile-main p {
+  margin: 0;
+  padding: 8px 10px;
+  line-height: 1.55;
+}
+
+.friend-blurb p {
+  padding: 7px 9px;
+}
+
+.friend-message-log {
+  display: grid;
+  min-height: 320px;
+}
+
+.friend-message-window {
+  min-height: 280px;
+  max-height: 46vh;
+  padding: 14px;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.friend-message-window p {
+  border-left: 1px solid rgba(255,255,255,0.22);
+  padding: 7px 0 7px 12px;
+}
+
+.friend-message-window span {
+  display: inline-block;
+  min-width: 52px;
+  margin-right: 8px;
+}
+
+@media (max-width: 720px) {
+  .friend-profile-header {
+    grid-template-columns: 1fr;
+  }
+
+  .friend-profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .friend-profile-side {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255,255,255,0.18);
+  }
+
+  .friend-profile-photo {
+    max-width: 220px;
+  }
+}
+
 video {
   display: block;
   margin: 60px auto 0;
@@ -293,6 +551,7 @@ video {
 .secret-video-frame {
   min-height: calc(100vh - 120px);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 24px;
@@ -320,6 +579,43 @@ video {
 
 .secret-video-content .secret-video-box {
   width: 100%;
+}
+
+.broadcast-note {
+  margin: 22px 0 0;
+  max-width: min(82vw, 760px);
+  text-align: center;
+  color: rgba(255,255,255,0.64) !important;
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+.broadcast-note-page2 {
+  margin-top: 34px;
+  margin-left: 28%;
+  text-align: left;
+}
+
+.broadcast-note-page4 {
+  align-self: flex-start;
+  margin-top: 18px;
+  margin-left: 18%;
+  text-align: left;
+}
+
+.broadcast-note-page5 {
+  align-self: flex-end;
+  margin-top: 38px;
+  margin-right: 14%;
+  text-align: right;
+}
+
+.broadcast-note-page6 {
+  grid-column: 2;
+  justify-self: end;
+  margin-top: -2px;
+  margin-right: 8%;
+  text-align: right;
 }
 
 .secret-video-message {
@@ -443,6 +739,17 @@ video {
 
   .secret-video-message p {
     min-height: 190px;
+  }
+
+  .broadcast-note-page2,
+  .broadcast-note-page4,
+  .broadcast-note-page5,
+  .broadcast-note-page6 {
+    grid-column: auto;
+    justify-self: center;
+    align-self: auto;
+    margin: 24px 0 0;
+    text-align: center;
   }
 }
 

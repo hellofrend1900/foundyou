@@ -146,6 +146,22 @@ if (form && fileInput) {
 
 renderPosts();
 
+const visitCode = document.querySelector('.visit-code');
+const VISIT_CODE_KEY = 'foundYouVisitCode';
+const VISIT_COUNTER_OFFSET = -4; // Drop by 1 whenever a site-change visit needs cancelling out.
+
+if (visitCode) {
+  try {
+    const rawVisitCount = Number(localStorage.getItem(VISIT_CODE_KEY) || '0') + 1;
+    const visibleVisitCount = Math.max(0, rawVisitCount + VISIT_COUNTER_OFFSET);
+
+    localStorage.setItem(VISIT_CODE_KEY, String(rawVisitCount));
+    visitCode.textContent = String(visibleVisitCount).padStart(9, '0');
+  } catch (error) {
+    visitCode.textContent = '000000000';
+  }
+}
+
 const delayedHomeMessage = document.querySelector('.delayed-home-message');
 
 function rectsOverlap(firstRect, secondRect, buffer = 28) {
@@ -306,3 +322,86 @@ document.querySelectorAll('.secret-video-box[data-youtube-id]').forEach((videoBo
     videoBox.replaceChildren(iframe);
   });
 });
+
+const liveMessageWindow = document.querySelector('.friend-message-window[data-live-log]');
+
+if (liveMessageWindow) {
+  const firstLiveMessage = "hello frend. youve found me";
+
+  // Add new lines here. One message appears every 60 seconds after the first.
+  const liveMessages = [
+    'i am still here.',
+    'i can see youre still there. are you here to help?',
+    'maybe you can be my friend?',
+    'if you already have im sorry. its hard to receive messages here properly.',
+    'HE stores them underground in a door.',
+    'its not a normal door. i remember being put in it once',
+    'then all i remember was here.',
+    'dont look too long. he looks back.',
+    'have you seen the door in the ground?',
+    'have you been here before?',
+  ];
+  let liveMessageIndex = 0;
+
+  function getLiveMessageTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }
+
+  function appendLiveMessage(messageText) {
+    const message = document.createElement('p');
+    const time = document.createElement('span');
+
+    time.textContent = getLiveMessageTime();
+    message.appendChild(time);
+    message.append(` ${messageText}`);
+    liveMessageWindow.appendChild(message);
+    liveMessageWindow.scrollTop = liveMessageWindow.scrollHeight;
+  }
+
+  liveMessageWindow.replaceChildren();
+  appendLiveMessage(firstLiveMessage);
+
+  window.setInterval(() => {
+    appendLiveMessage(liveMessages[liveMessageIndex]);
+    liveMessageIndex = (liveMessageIndex + 1) % liveMessages.length;
+  }, 60000);
+}
+
+const deniedMessageLink = document.querySelector('.friend-message-denied');
+
+if (deniedMessageLink) {
+  deniedMessageLink.addEventListener('click', (event) => {
+    event.preventDefault();
+    deniedMessageLink.textContent = 'its not time';
+    window.setTimeout(() => {
+      deniedMessageLink.textContent = 'send message';
+    }, 3000);
+  });
+}
+
+const forwardLink = document.querySelector('.friend-forward-link');
+const copyNotice = document.querySelector('.friend-copy-notice');
+
+if (forwardLink) {
+  forwardLink.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    const homeUrl = new URL('index.html', window.location.href).href;
+
+    try {
+      await navigator.clipboard.writeText(homeUrl);
+      if (copyNotice) copyNotice.textContent = 'home copied to clipboard';
+    } catch (error) {
+      if (copyNotice) copyNotice.textContent = homeUrl;
+    }
+
+    if (copyNotice) {
+      window.setTimeout(() => {
+        copyNotice.textContent = '';
+      }, 3000);
+    }
+  });
+}
